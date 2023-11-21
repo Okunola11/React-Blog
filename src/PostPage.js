@@ -7,7 +7,7 @@ const PostPage = ({ posts, handleDelete }) => {
   return (
     <main className="PostPage">
       <article className="post">
-        {posts && (
+        {post && (
           <>
             <h2>{post.title}</h2>
             <p className="postDate">{post.datetime}</p>
@@ -15,7 +15,7 @@ const PostPage = ({ posts, handleDelete }) => {
             <button onClick={() => handleDelete(post.id)}>Delete Post</button>
           </>
         )}
-        {!posts && (
+        {!post && (
           <>
             <h2>Post Not Found</h2>
             <p>Well, that's dissapointing</p>
