@@ -18,12 +18,14 @@ const useWindowSize = () => {
 
     window.addEventListener("resize", handleResize);
 
-    const cleanUp = () => {
-      console.log(`runs if a useEffect dependency changes`);
+    /* const cleanUp = () => {
       window.removeEventListener("resize", handleResize);
     };
 
-    return cleanUp;
+    return cleanUp; */
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   return windowSize;

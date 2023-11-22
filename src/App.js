@@ -9,6 +9,8 @@ import { Route, Routes, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import format from "date-fns/format";
 import api from "./api/Posts";
+import useWindowSize from "./hooks/useWindowSize";
+import useAxiosFetch from "./hooks/useAxiosFetch";
 
 function App() {
   const [posts, setPosts] = useState([]);
@@ -20,8 +22,17 @@ function App() {
   const [editBody, setEditBody] = useState("");
 
   const navigate = useNavigate();
+  const { width } = useWindowSize();
+
+  const { data, fetchError, isLoading } = useAxiosFetch(
+    "http://localhost:3500/posts"
+  );
 
   useEffect(() => {
+    setPosts(data);
+  }, [data]);
+
+  /*  useEffect(() => {
     const fetchPost = async () => {
       try {
         const response = await api.get("/posts");
@@ -38,7 +49,7 @@ function App() {
       }
     };
     fetchPost();
-  }, []);
+  }, []); */
 
   useEffect(() => {
     const filteredResults = posts.filter(
@@ -97,9 +108,18 @@ function App() {
     <Routes>
       <Route
         path="/"
-        element={<Layout search={search} setSearch={setSearch} />}
+        element={<Layout width={width} search={search} setSearch={setSearch} />}
       >
-        <Route index element={<Home posts={results} />} />
+        <Route
+          index
+          element={
+            <Home
+              posts={results}
+              fetchError={fetchError}
+              isLoading={isLoading}
+            />
+          }
+        />
         <Route path="post">
           <Route
             index
